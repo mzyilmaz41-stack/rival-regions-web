@@ -315,3 +315,159 @@ export default function App() {
             </CardContent>
           </Card>
           {/* Çalışma */}
+          <Card className="shadow-sm">
+            <CardHeader className="pb-2">
+              <CardTitle className="flex items-center gap-2">
+                <Factory /> Çalışma
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="grid gap-3">
+              <div className="grid grid-cols-2 gap-3">
+                <Field label="Kullanıcı Lv">
+                  <NumberInput value={work.userLevel} onChange={(v) => setWork((w) => ({ ...w, userLevel: v }))} />
+                </Field>
+                <Field label="Fabrika Lv">
+                  <NumberInput value={work.factoryLevel} onChange={(v) => setWork((w) => ({ ...w, factoryLevel: v }))} />
+                </Field>
+              </div>
+              <div className="grid grid-cols-2 gap-3">
+                <Field label="Res. Koef (0-100)">
+                  <NumberInput value={work.resourceKoef} onChange={(v) => setWork((w) => ({ ...w, resourceKoef: v }))} />
+                </Field>
+                <Field label="Work Exp (0-100)">
+                  <NumberInput value={work.workExp} onChange={(v) => setWork((w) => ({ ...w, workExp: v }))} />
+                </Field>
+              </div>
+              <div className="grid grid-cols-2 gap-3">
+                <Field label="Dept. of Res %">
+                  <NumberInput value={work.depOfRes} onChange={(v) => setWork((w) => ({ ...w, depOfRes: v }))} />
+                </Field>
+                <Field label="Kaynak Türü">
+                  <Select value={work.resourceType} onValueChange={(val) => setWork((w) => ({ ...w, resourceType: val as WorkInputs["resourceType"] }))}>
+                    <SelectTrigger><SelectValue placeholder="Seç" /></SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="standard">Standart</SelectItem>
+                      <SelectItem value="gold">Altın</SelectItem>
+                      <SelectItem value="diamond">Elmas</SelectItem>
+                      <SelectItem value="liquefaction">Sıvılaştırma</SelectItem>
+                      <SelectItem value="he3lab">He-3 Lab</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </Field>
+              </div>
+              <Separator />
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <div className="text-xs opacity-60">Üretkenlik</div>
+                  <div className="text-2xl font-semibold tabular-nums">{workOut.productivity.toFixed(2)}</div>
+                </div>
+                <div>
+                  <div className="text-xs opacity-60">Withdrawn Puan</div>
+                  <div className="text-2xl font-semibold tabular-nums">{workOut.withdrawnPoints.toExponential(3)}</div>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Savaş */}
+          <Card className="shadow-sm">
+            <CardHeader className="pb-2">
+              <CardTitle className="flex items-center gap-2">
+                <Sword /> Savaş
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="grid gap-3">
+              <div className="grid grid-cols-2 gap-3">
+                <Field label="Military Index">
+                  <NumberInput value={war.militaryIndex} onChange={(v) => setWar((x) => ({ ...x, militaryIndex: v }))} />
+                </Field>
+                <Field label="Missile Farkı (-300..)">
+                  <NumberInput value={war.missileSystemDiff} onChange={(v) => setWar((x) => ({ ...x, missileSystemDiff: v }))} />
+                </Field>
+              </div>
+              <div className="grid grid-cols-3 gap-3">
+                <Field label="Sea Port Lv">
+                  <NumberInput value={war.seaPort} onChange={(v) => setWar((x) => ({ ...x, seaPort: v }))} />
+                </Field>
+                <Field label="Airport Lv">
+                  <NumberInput value={war.airport} onChange={(v) => setWar((x) => ({ ...x, airport: v }))} />
+                </Field>
+                <Field label="Mil. Academy Lv">
+                  <NumberInput value={war.militaryAcademy} onChange={(v) => setWar((x) => ({ ...x, militaryAcademy: v }))} />
+                </Field>
+              </div>
+              <div className="grid grid-cols-2 gap-3">
+                <Field label="Birlik α-Hasarı">
+                  <NumberInput value={war.troopsAlpha} onChange={(v) => setWar((x) => ({ ...x, troopsAlpha: v }))} />
+                </Field>
+                <Field label="Mesafe Cezası %">
+                  <div className="flex items-center gap-3">
+                    <Switch checked={war.applyDistancePenalty} onCheckedChange={(c) => setWar((x) => ({ ...x, applyDistancePenalty: c }))} />
+                    <Slider value={[war.distancePenaltyPct]} onValueChange={(v) => setWar((x) => ({ ...x, distancePenaltyPct: v[0] }))} max={50} step={1} />
+                    <span className="w-10 text-right tabular-nums">{war.distancePenaltyPct}%</span>
+                  </div>
+                </Field>
+              </div>
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <Switch checked={war.randomness} onCheckedChange={(c) => setWar((x) => ({ ...x, randomness: c }))} />
+                  <span className="text-sm">Rastgelelik (±12.5%)</span>
+                </div>
+                <Button variant="secondary" onClick={() => setWar((x) => ({ ...x }))}>Hesapla</Button>
+              </div>
+              <Separator />
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <div className="text-xs opacity-60">Toplam Hasar</div>
+                  <div className="text-2xl font-semibold tabular-nums">{damage.toFixed(0)}</div>
+                </div>
+                <div>
+                  <div className="text-xs opacity-60">Savunma Hasarı</div>
+                  <div className="text-2xl font-semibold tabular-nums">{defence.toLocaleString()}</div>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Harita ve Gelir */}
+          <Card className="shadow-sm">
+            <CardHeader className="pb-2">
+              <CardTitle className="flex items-center gap-2">
+                <Map /> Harita & Gelir
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="grid lg:grid-cols-2 gap-4">
+              <WorldMapMock onSelectRegion={setActiveRegion} />
+              <div className="grid gap-4">
+                <div className="grid grid-cols-2 gap-3">
+                  <Field label="Aktif Bölge">
+                    <Input value={activeRegion} onChange={(e) => setActiveRegion(e.target.value)} />
+                  </Field>
+                  <Field label="Vatandaşlık">
+                    <Input value={citizenship} onChange={(e) => setCitizenship(e.target.value)} />
+                  </Field>
+                </div>
+                <Tabs defaultValue="income">
+                  <TabsList className="flex flex-wrap">
+                    <TabsTrigger value="income" className="gap-2"><Wallet size={16} /> Gelir</TabsTrigger>
+                  </TabsList>
+                  <TabsContent value="income" className="mt-4 grid gap-3">
+                    <div className="grid grid-cols-2 gap-3">
+                      <Field label="Vergi %">
+                        <NumberInput value={tax.taxRate} onChange={(v) => setTax({ taxRate: v })} />
+                      </Field>
+                      <div>
+                        <div className="text-xs opacity-60">Net Gelir</div>
+                        <div className="text-2xl font-semibold tabular-nums">{net.toFixed(2)}</div>
+                      </div>
+                    </div>
+                  </TabsContent>
+                </Tabs>
+              </div>
+            </CardContent>
+          </Card>
+        </section>
+      </main>
+    </div>
+  );
+}
